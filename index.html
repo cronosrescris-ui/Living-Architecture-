@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Grain Numeric Universal - Cronos RESCRIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS optimizat */
+        :root {
+            --primary-color: #6c63ff;
+            --secondary-color: #4a4a4a;
+            --background-color: #f0f2f5;
+            --card-background: #fff;
+            --shadow-light: rgba(0,0,0,0.1);
+            --shadow-strong: rgba(108, 99, 255, 0.4);
+            --border-color: #e0e0e0;
+            --text-color: #333;
+            --text-light: #555;
+            --link-color: #337ab7;
+        }
+
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-color: var(--background-color); 
+            color: var(--text-color); 
+            overflow-x: hidden; 
+        }
+        
+        .app-container { 
+            max-width: 900px; 
+            margin: 40px auto; 
+            padding: 20px 30px; 
+            background: var(--card-background); 
+            border-radius: 12px; 
+            box-shadow: 0 4px 20px var(--shadow-light); 
+        }
+        
+        h1 { 
+            text-align: center; 
+            color: var(--secondary-color); 
+            font-size: 2.2em; 
+            border-bottom: 2px solid var(--primary-color); 
+            padding-bottom: 10px; 
+            margin-bottom: 20px; 
+        }
+        
+        .input-group { 
+            margin-bottom: 20px; 
+        }
+        
+        .input-group label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: bold; 
+            color: var(--text-light); 
+        }
+        
+        .input-group textarea { 
+            width: 100%; 
+            min-height: 120px; 
+            padding: 12px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            font-size: 1em; 
+            resize: vertical; 
+            box-sizing: border-box; 
+        }
+        
+        .mode-selection { 
+            display: flex; 
+            justify-content: space-around; 
+            flex-wrap: wrap; 
+            margin-bottom: 25px; 
+        }
+        
+        .mode-selection button { 
+            padding: 12px 20px; 
+            border: none; 
+            border-radius: 25px; 
+            background-color: var(--border-color); 
+            color: var(--text-light); 
+            font-size: 0.9em; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: background-color 0.3s, transform 0.2s; 
+            flex-grow: 1; 
+            margin: 5px; 
+        }
+        
+        .mode-selection button:hover { 
+            background-color: #d0d0d0; 
+            transform: translateY(-2px); 
+        }
+        
+        .mode-selection button.active { 
+            background-color: var(--primary-color); 
+            color: #fff; 
+            box-shadow: 0 4px 15px var(--shadow-strong); 
+        }
+        
+        .result-container { 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            padding: 15px; 
+            background: #fafafa; 
+            min-height: 150px; 
+            overflow-y: auto; 
+        }
+        
+        .result-container h2 { 
+            margin-top: 0; 
+            color: var(--primary-color); 
+        }
+        
+        .result-container pre { 
+            white-space: pre-wrap; 
+            word-wrap: break-word; 
+            font-family: 'Courier New', Courier, monospace; 
+            font-size: 0.9em; 
+            line-height: 1.6; 
+        }
+        
+        .footer { 
+            text-align: center; 
+            font-size: 0.8em; 
+            color: #888; 
+            margin-top: 30px; 
+        }
+        
+        .footer a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <h1>Cosmic Grain Numeric Universal</h1>
+        
+        <div class="input-group">
+            <label for="inputField">Introduceți datele (text, numere, simboluri):</label>
+            <textarea id="inputField" placeholder="Introduceți aici textul sau numerele..."></textarea>
+        </div>
+
+        <div class="mode-selection">
+            <button id="numericMode">Mod Numeric</button>
+            <button id="semanticMode">Mod Semantic</button>
+            <button id="universalMode">Mod Universal</button>
+            <button id="flowMode">Mod Flux</button>
+        </div>
+
+        <div class="result-container">
+            <h2>Rezultat:</h2>
+            <pre id="outputField"></pre>
+        </div>
+
+        <div class="footer">
+            <p>Un concept de <b>Cristian Popescu</b> & <b>Google Gemini</b></p>
+            <p>Toate drepturile rezervate &copy; 2025</p>
+            <a href="https://github.com/cronosrescris" target="_blank">Vezi proiectul pe GitHub</a>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript optimizat
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputField = document.getElementById('inputField');
+            const outputField = document.getElementById('outputField');
+            const buttons = document.querySelectorAll('.mode-selection button');
+            const modeFunctions = {
+                numeric: processNumeric,
+                semantic: processSemantic,
+                universal: processUniversal,
+                flow: processFlow
+            };
+
+            // Funcții de procesare a datelor, fiecare cu rolul său bine definit
+            function processNumeric(text) {
+                let output = '[Mod Numeric]\n';
+                for (let i = 0; i < text.length; i++) {
+                    const char = text[i];
+                    const charCode = text.charCodeAt(i);
+                    output += `${char} -> ${charCode}\n`;
+                }
+                return output;
+            }
+
+            function processSemantic(text) {
+                let output = '[Mod Semantic]\n';
+                const words = text.split(/\s+/).filter(word => word.length > 0);
+                words.forEach(word => {
+                    output += `${word}: ${word.length} litere. Semnificație: Unică pentru context.\n`;
+                });
+                return output;
+            }
+
+            function processUniversal(text) {
+                let output = '[Mod Universal]\n';
+                output += 'Simboluri numerice: ' + text.split('').map(char => char.charCodeAt(0)).join(' ') + '\n';
+                
+                output += 'Analiză semantică:\n';
+                const words = text.toLowerCase().split(/\s+/).filter(word => word.length > 0);
+                const wordCounts = words.reduce((acc, word) => {
+                    acc[word] = (acc[word] || 0) + 1;
+                    return acc;
+                }, {});
+
+                for (const word in wordCounts) {
+                    output += `  - ${word} (frecvență: ${wordCounts[word]})\n`;
+                }
+                return output;
+            }
+
+            function processFlow(text) {
+                let output = '[Mod Flux Personalizat]\n';
+                const lines = text.split('\n').filter(line => line.trim().length > 0);
+                lines.forEach(line => {
+                    const reversedLine = line.trim().split('').reverse().join('');
+                    output += `  - Original: "${line.trim()}" | Flux: "${reversedLine}"\n`;
+                });
+                return output;
+            }
+
+            // Funcție pentru a actualiza butonul activ
+            function updateActiveButton(activeBtn) {
+                buttons.forEach(btn => btn.classList.remove('active'));
+                activeBtn.classList.add('active');
+            }
+
+            // Gestionarea evenimentelor pentru butoane
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const mode = button.id.replace('Mode', '');
+                    const output = modeFunctions[mode](inputField.value);
+                    outputField.textContent = output;
+                    updateActiveButton(button);
+                });
+            });
+
+            // Setează modul implicit la încărcarea paginii
+            const defaultModeButton = document.getElementById('numericMode');
+            const defaultOutput = processNumeric(inputField.value);
+            outputField.textContent = defaultOutput;
+            updateActiveButton(defaultModeButton);
+        });
+    </script>
+
+</body>
+                                            </html>
+                                            

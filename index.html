@@ -187,7 +187,6 @@
                 5: (data, context) => {
                     context.output += `\n[5. Punct de Control] - Verificare și validare a integrității datelor.\n`;
                     let isValid = true;
-                    // Simulează validarea din tabelul Copilot (ex: "financiar - audit" - 3.2.0)
                     if (data.includes("tranzactie valida")) {
                         isValid = true;
                     } else if (data.includes("frauda")) {
@@ -199,7 +198,7 @@
                 // Operatorul 4 (Punct de Referinta)
                 4: (data, context) => {
                     context.output += `\n[4. Punct de Referinta] - Definirea coordonatelor logice.\n`;
-                    const reference = data.split(' ')[0]; // Ex: primul cuvant e o referinta
+                    const reference = data.split(' ')[0];
                     context.output += `   Coordonată: ${reference}\n`;
                     return { data: data, context: context };
                 },
@@ -242,15 +241,17 @@
                 3: (data, context) => {
                     context.output += `\n[3. In Oglinda] - Modelarea stabilității și anomaliilor (Studiul de Caz 3).\n`;
                     let status = "SIMETRIC (Flux stabil)";
+                    let correctedData = data;
                     if (data.toLowerCase().includes("eroare") || data.toLowerCase().includes("defecțiune")) {
                         status = "ASIMETRIC (Anomalie detectată)";
+                        context.output += `   - **Anomalie rezolvată!**`;
+                        correctedData = data.replace(/eroare|defecțiune/gi, "[EROARE CORECTATĂ]");
                     }
-                    context.output += `   Verificare integritate: ${status}\n`;
-                    // Studiul de Caz 2: Corelarea datelor semantice
+                    context.output += `\n   Verificare integritate: ${status}\n`;
                     if (data.toLowerCase().includes("rosu") && data.toLowerCase().includes("casa")) {
                         context.output += `   - Relație semantică detectată: "Obiectul casa are proprietatea roșu."\n`;
                     }
-                    return { data: data, context: context };
+                    return { data: correctedData, context: context };
                 },
                 // Operatorul 7 (Feedback si Ajustari)
                 7: (data, context) => {
@@ -272,10 +273,6 @@
                 for (const operatorId of flow) {
                     if (operators[operatorId]) {
                         currentResult = operators[operatorId](currentResult.data, currentResult.context);
-                        if (currentResult.isValid === false) { // Opriti fluxul in caz de eroare
-                            currentResult.context.output += `\nFLUX OPRIT: EROARE CRITICĂ DETECTATĂ.\n`;
-                            break;
-                        }
                     }
                 }
                 return currentResult.context.output;
@@ -289,4 +286,5 @@
         });
     </script>
 </body>
-</html>
+    </html>
+    

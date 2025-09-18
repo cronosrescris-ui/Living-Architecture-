@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic Grain Numeric Universal - Cronos RESCRIS</title>
+    <title>Sistemul de Gestiune a Fluxurilor de Lucru</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS optimizat */
         :root {
             --primary-color: #6c63ff;
             --secondary-color: #4a4a4a;
@@ -140,18 +139,16 @@
 <body>
 
     <div class="app-container">
-        <h1>Cosmic Grain Numeric Universal</h1>
+        <h1>Sistemul de Gestiune a Fluxurilor de Lucru</h1>
+        <p style="text-align: center; color: var(--text-light);"><i>Demonstrație bazată pe Arhitectura Numerică "Ca La Carte"</i></p>
         
         <div class="input-group">
             <label for="inputField">Introduceți datele (text, numere, simboluri):</label>
-            <textarea id="inputField" placeholder="Introduceți aici textul sau numerele..."></textarea>
+            <textarea id="inputField" placeholder="Introduceți aici date pentru procesare (ex: 2, 20, 30, 40... sau rosu reprezinta casa sau cutie cu pixuri)"></textarea>
         </div>
 
         <div class="mode-selection">
-            <button id="numericMode">Mod Numeric</button>
-            <button id="semanticMode">Mod Semantic</button>
-            <button id="universalMode">Mod Universal</button>
-            <button id="flowMode">Mod Flux</button>
+            <button id="processButton">Execută Fluxul de Lucru</button>
         </div>
 
         <div class="result-container">
@@ -167,89 +164,129 @@
     </div>
 
     <script>
-        // JavaScript optimizat
         document.addEventListener('DOMContentLoaded', () => {
             const inputField = document.getElementById('inputField');
             const outputField = document.getElementById('outputField');
-            const buttons = document.querySelectorAll('.mode-selection button');
-            const modeFunctions = {
-                numeric: processNumeric,
-                semantic: processSemantic,
-                universal: processUniversal,
-                flow: processFlow
+            const processButton = document.getElementById('processButton');
+
+            // Harta operatorilor logici - inima sistemului viu
+            const operatorMap = {
+                // Operatorul 0 (Radical, Punct de Origine)
+                0: (data, context) => {
+                    context.output += `\n[0. Radical] - Punct de start. Analizăm scopul principal.\n`;
+                    context.output += `   Input: ${data}\n`;
+                    return { data: data, context: context };
+                },
+                // Operatorul 1 (Unitatea de Baza)
+                1: (data, context) => {
+                    context.output += `\n[1. Unitate de Baza] - Inițierea unei acțiuni concrete.\n`;
+                    context.output += `   Acțiune: Se inițiază procesarea datelor.\n`;
+                    return { data: data, context: context };
+                },
+                // Operatorul 5 (Radical, Punct de Control)
+                5: (data, context) => {
+                    context.output += `\n[5. Punct de Control] - Verificare și validare a integrității datelor.\n`;
+                    let isValid = true;
+                    // Simulează validarea din tabelul Copilot (ex: "financiar - audit" - 3.2.0)
+                    if (data.includes("tranzactie valida")) {
+                        isValid = true;
+                    } else if (data.includes("frauda")) {
+                        isValid = false;
+                    }
+                    context.output += `   Status de validare: ${isValid ? 'VALID' : 'INVALID'}\n`;
+                    return { data: data, context: context, isValid: isValid };
+                },
+                // Operatorul 4 (Punct de Referinta)
+                4: (data, context) => {
+                    context.output += `\n[4. Punct de Referinta] - Definirea coordonatelor logice.\n`;
+                    const reference = data.split(' ')[0]; // Ex: primul cuvant e o referinta
+                    context.output += `   Coordonată: ${reference}\n`;
+                    return { data: data, context: context };
+                },
+                // Operatorul 2 (La Patrat la Infinit) - Modul de creștere exponențială
+                2: (data, context) => {
+                    context.output += `\n[2. La Patrat la Infinit] - Modelarea creșterii și a datelor neomogene.\n`;
+                    context.output += `   Analiză date asimetrice (Studiul de Caz 1):\n`;
+                    const numbers = data.match(/\d+/g) ? data.match(/\d+/g).map(Number) : [];
+                    let result = "Nu s-au găsit numere.";
+                    if (numbers.length > 0) {
+                        if (numbers.includes(2) && numbers.length > 1) {
+                             result = `   - S-a detectat elementul asimetric: 2. Nu este o eroare, ci un punct de start unic.`;
+                        } else {
+                            result = `   - Se procesează datele: ${numbers.join(', ')}`;
+                        }
+                    }
+                    context.output += result + '\n';
+                    return { data: data, context: context };
+                },
+                // Operatorul 9 (Punctul Fix, Radical)
+                9: (data, context) => {
+                    context.output += `\n[9. Punctul Fix] - Finalizarea unui ciclu.\n`;
+                    context.output += `   Rezultatul final al procesului: "${data}"\n`;
+                    return { data: data, context: context };
+                },
+                // Operatorul 6 (Unitatea de Masura)
+                6: (data, context) => {
+                    context.output += `\n[6. Unitatea de Masura] - Evaluarea volumului și cantității.\n`;
+                    const wordCount = data.split(/\s+/).filter(w => w).length;
+                    context.output += `   Număr de cuvinte (volum): ${wordCount}\n`;
+                    return { data: data, context: context };
+                },
+                // Operatorul 8 (Coordonator)
+                8: (data, context) => {
+                    context.output += `\n[8. Coordonator] - Sincronizarea și integrarea fluxurilor.\n`;
+                    context.output += `   Coordonare: Se ordonează datele pentru a fi integrate în sistem.\n`;
+                    return { data: data, context: context };
+                },
+                // Operatorul 3 (In Oglinda) - Simetric si Asimetric
+                3: (data, context) => {
+                    context.output += `\n[3. In Oglinda] - Modelarea stabilității și anomaliilor (Studiul de Caz 3).\n`;
+                    let status = "SIMETRIC (Flux stabil)";
+                    if (data.toLowerCase().includes("eroare") || data.toLowerCase().includes("defecțiune")) {
+                        status = "ASIMETRIC (Anomalie detectată)";
+                    }
+                    context.output += `   Verificare integritate: ${status}\n`;
+                    // Studiul de Caz 2: Corelarea datelor semantice
+                    if (data.toLowerCase().includes("rosu") && data.toLowerCase().includes("casa")) {
+                        context.output += `   - Relație semantică detectată: "Obiectul casa are proprietatea roșu."\n`;
+                    }
+                    return { data: data, context: context };
+                },
+                // Operatorul 7 (Feedback si Ajustari)
+                7: (data, context) => {
+                    context.output += `\n[7. Feedback] - Analiza rezultatelor și ajustare.\n`;
+                    const hasError = context.output.includes("INVALID") || context.output.includes("Anomalie");
+                    const feedback = hasError ? "Se sugerează re-evaluarea fluxului de lucru pentru a corecta anomaliile." : "Sistemul este stabil și funcționează conform așteptărilor.";
+                    context.output += `   Feedback automat: ${feedback}\n`;
+                    return { data: data, context: context };
+                }
             };
 
-            // Funcții de procesare a datelor, fiecare cu rolul său bine definit
-            function processNumeric(text) {
-                let output = '[Mod Numeric]\n';
-                for (let i = 0; i < text.length; i++) {
-                    const char = text[i];
-                    const charCode = text.charCodeAt(i);
-                    output += `${char} -> ${charCode}\n`;
+            // Fluxul de lucru principal - un singur organism viu
+            const coreFlow = [0, 1, 5, 4, 2, 8, 3, 6, 7, 9]; // Secvența numerică de bază 0 1 5 4 2 9 6 8 3 7
+
+            // Functia care executa fluxul viu
+            const executeFlow = (input, flow, operators) => {
+                let currentResult = { data: input, context: { output: '' } };
+
+                for (const operatorId of flow) {
+                    if (operators[operatorId]) {
+                        currentResult = operators[operatorId](currentResult.data, currentResult.context);
+                        if (currentResult.isValid === false) { // Opriti fluxul in caz de eroare
+                            currentResult.context.output += `\nFLUX OPRIT: EROARE CRITICĂ DETECTATĂ.\n`;
+                            break;
+                        }
+                    }
                 }
-                return output;
-            }
+                return currentResult.context.output;
+            };
 
-            function processSemantic(text) {
-                let output = '[Mod Semantic]\n';
-                const words = text.split(/\s+/).filter(word => word.length > 0);
-                words.forEach(word => {
-                    output += `${word}: ${word.length} litere. Semnificație: Unică pentru context.\n`;
-                });
-                return output;
-            }
-
-            function processUniversal(text) {
-                let output = '[Mod Universal]\n';
-                output += 'Simboluri numerice: ' + text.split('').map(char => char.charCodeAt(0)).join(' ') + '\n';
-                
-                output += 'Analiză semantică:\n';
-                const words = text.toLowerCase().split(/\s+/).filter(word => word.length > 0);
-                const wordCounts = words.reduce((acc, word) => {
-                    acc[word] = (acc[word] || 0) + 1;
-                    return acc;
-                }, {});
-
-                for (const word in wordCounts) {
-                    output += `  - ${word} (frecvență: ${wordCounts[word]})\n`;
-                }
-                return output;
-            }
-
-            function processFlow(text) {
-                let output = '[Mod Flux Personalizat]\n';
-                const lines = text.split('\n').filter(line => line.trim().length > 0);
-                lines.forEach(line => {
-                    const reversedLine = line.trim().split('').reverse().join('');
-                    output += `  - Original: "${line.trim()}" | Flux: "${reversedLine}"\n`;
-                });
-                return output;
-            }
-
-            // Funcție pentru a actualiza butonul activ
-            function updateActiveButton(activeBtn) {
-                buttons.forEach(btn => btn.classList.remove('active'));
-                activeBtn.classList.add('active');
-            }
-
-            // Gestionarea evenimentelor pentru butoane
-            buttons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const mode = button.id.replace('Mode', '');
-                    const output = modeFunctions[mode](inputField.value);
-                    outputField.textContent = output;
-                    updateActiveButton(button);
-                });
+            processButton.addEventListener('click', () => {
+                const inputText = inputField.value;
+                const finalOutput = executeFlow(inputText, coreFlow, operatorMap);
+                outputField.textContent = finalOutput;
             });
-
-            // Setează modul implicit la încărcarea paginii
-            const defaultModeButton = document.getElementById('numericMode');
-            const defaultOutput = processNumeric(inputField.value);
-            outputField.textContent = defaultOutput;
-            updateActiveButton(defaultModeButton);
         });
     </script>
-
 </body>
-                                            </html>
-                                            
+</html>

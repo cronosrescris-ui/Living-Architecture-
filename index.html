@@ -145,6 +145,9 @@
         <div class="input-group">
             <label for="inputField">Introduceți datele (text, numere, simboluri):</label>
             <textarea id="inputField" placeholder="Introduceți aici date pentru procesare (ex: 2, 20, 30, 40... sau rosu reprezinta casa sau cutie cu pixuri)"></textarea>
+            <p style="text-align: center; color: #6c63ff; font-style: italic; font-size: 0.9em; margin-top: 10px;">
+                <i>Pentru a testa Operatorul "În Oglindă", introduceți: mergem la dimineață sculăm când cumpărături ne</i>
+            </p>
         </div>
 
         <div class="mode-selection">
@@ -187,21 +190,17 @@
                 });
             });
 
-            // Harta operatorilor logici - inima sistemului viu
             const operatorMap = {
-                // Operatorul 0 (Radical, Punct de Origine)
                 0: (data, context) => {
                     context.output += `\n[0. Radical] - Punct de start. Analizăm scopul principal.\n`;
                     context.output += `   Input: ${data}\n`;
                     return { data: data, context: context };
                 },
-                // Operatorul 1 (Unitatea de Baza)
                 1: (data, context) => {
                     context.output += `\n[1. Unitate de Baza] - Inițierea unei acțiuni concrete.\n`;
                     context.output += `   Acțiune: Se inițiază procesarea datelor.\n`;
                     return { data: data, context: context };
                 },
-                // Operatorul 5 (Radical, Punct de Control)
                 5: (data, context) => {
                     context.output += `\n[5. Punct de Control] - Verificare și validare a integrității datelor.\n`;
                     let isValid = true;
@@ -211,14 +210,12 @@
                     context.output += `   Status de validare: ${isValid ? 'VALID' : 'INVALID'}\n`;
                     return { data: data, context: context, isValid: isValid };
                 },
-                // Operatorul 4 (Punct de Referinta)
                 4: (data, context) => {
                     context.output += `\n[4. Punct de Referinta] - Definirea coordonatelor logice.\n`;
                     const reference = data.split(' ')[0];
                     context.output += `   Coordonată: ${reference}\n`;
                     return { data: data, context: context };
                 },
-                // Operatorul 2 (La Patrat la Infinit) - Modul de creștere exponențială
                 2: (data, context) => {
                     context.output += `\n[2. La Patrat la Infinit] - Modelarea creșterii și a datelor neomogene.\n`;
                     const numbers = data.match(/\d+/g) ? data.match(/\d+/g).map(Number) : [];
@@ -230,26 +227,22 @@
                     context.output += result;
                     return { data: data, context: context };
                 },
-                // Operatorul 9 (Punctul Fix, Radical)
                 9: (data, context) => {
                     context.output += `\n[9. Punctul Fix] - Finalizarea unui ciclu.\n`;
                     context.output += `   Rezultatul final al procesului: "${data}"\n`;
                     return { data: data, context: context };
                 },
-                // Operatorul 6 (Unitatea de Masura)
                 6: (data, context) => {
                     context.output += `\n[6. Unitatea de Masura] - Evaluarea volumului și cantității.\n`;
                     const wordCount = data.split(/\s+/).filter(w => w).length;
                     context.output += `   Număr de cuvinte (volum): ${wordCount}\n`;
                     return { data: data, context: context };
                 },
-                // Operatorul 8 (Coordonator)
                 8: (data, context) => {
                     context.output += `\n[8. Coordonator] - Sincronizarea și integrarea fluxurilor.\n`;
                     context.output += `   Coordonare: Se ordonează datele pentru a fi integrate în sistem.\n`;
                     return { data: data, context: context };
                 },
-                // Operatorul 3 (In Oglinda) - Simetric si Asimetric
                 3: (data, context) => {
                     context.output += `\n[3. In Oglinda] - Modelarea stabilității și anomaliilor.\n`;
                     const words = data.toLowerCase().split(/\s+/).filter(w => w);
@@ -262,7 +255,6 @@
                     context.output += `   Verificare integritate: ${status}\n`;
                     return { data: data, context: context };
                 },
-                // Operatorul 7 (Feedback si Ajustari)
                 7: (data, context) => {
                     context.output += `\n[7. Feedback] - Analiza rezultatelor și ajustare.\n`;
                     const hasError = context.output.includes("INVALID") || context.output.includes("Anomalie");
@@ -272,7 +264,6 @@
                 }
             };
             
-            // Această funcție a lipsit și a cauzat problema
             const executeFlow = (input, flow, operatorMap) => {
                 let currentData = input;
                 let context = { output: '' };
@@ -335,4 +326,5 @@
         });
     </script>
 </body>
-</html>
+    </html>
+    

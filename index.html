@@ -271,6 +271,20 @@
                     return { data: data, context: context };
                 }
             };
+            
+            // Această funcție a lipsit și a cauzat problema
+            const executeFlow = (input, flow, operatorMap) => {
+                let currentData = input;
+                let context = { output: '' };
+                for (const op of flow) {
+                    const result = operatorMap[op](currentData, context);
+                    if (result) {
+                        currentData = result.data;
+                        context = result.context;
+                    }
+                }
+                return context.output;
+            };
 
             const flows = {
                 'flux-mode': [0, 1, 5, 4, 2, 8, 3, 6, 7, 9],

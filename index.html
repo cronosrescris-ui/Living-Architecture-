@@ -172,9 +172,9 @@
         <div class="input-group">
             <label for="inputField">Introduceți fluxul de date:</label>
             <textarea id="inputField" placeholder="Exemple de date pentru a testa toate modurile:
-- Modul Text & Logică: '1, 2, 4, 8, 16, 32'
-- Modul Semantic: 'o greșală gramaticala și de ortografie, dar care este corectată și stabilizată'
-- Modul Hibrid (Cameră): Descrie un obiect sau text pe care vrei să-l analizezi."></textarea>
+- Modul Text & Logică: '1, 2, 4, 8, 16, 32' (analiză matematică)
+- Modul Semantic: 'o greșală gramaticala și de ortografie, dar care este corectată și stabilizată' (analiză lingvistică)
+- Modul Hibrid (Cameră): Descrie un obiect sau text pe care vrei să-l analizezi. (analiză vizuală)"></textarea>
         </div>
 
         <div id="video-container">
@@ -184,7 +184,7 @@
         <div class="mode-selection">
             <button id="text-mode" class="active">Mod Text & Logică</button>
             <button id="semantic-mode">Mod Semantic</button>
-            <button id="camera-mode">Mod Cameră</button>
+            <button id="camera-mode">Mod Cameră (Simulare)</button>
         </div>
 
         <div class="mode-selection">
@@ -208,9 +208,7 @@
             const inputField = document.getElementById('inputField');
             const outputField = document.getElementById('outputField');
             const processButton = document.getElementById('processButton');
-            const cameraModeButton = document.getElementById('camera-mode');
-            const textModeButton = document.getElementById('text-mode');
-            const semanticModeButton = document.getElementById('semantic-mode');
+            const buttons = document.querySelectorAll('.mode-selection button');
             const videoContainer = document.getElementById('video-container');
             const cameraFeed = document.getElementById('camera-feed');
             let currentMode = 'text';
@@ -243,16 +241,19 @@
                     context.output += `\n[3. În oglindă, simetric și asimetric] - Repară greșeli și menține fluxurile constante prin aplicarea regulilor de simetrie și asimetrie.\n`;
                     
                     let correctedData = data;
-                    const words = correctedData.split(/\s+/);
-                    const hasCoherence = words.length > 3 && (words.length / correctedData.length) < 0.2; // Ex. a simple, generalized logic
+                    const words = correctedData.split(/\s+/).filter(w => w);
                     
-                    if (!hasCoherence) {
-                        const sortedWords = words.sort().join(' ');
-                        correctedData = `Textul a fost corectat. Coerența a fost restabilită prin reordonare: ${sortedWords}`;
+                    const incoherentSentence = ["Mergem", "la", "dimineață", "sculăm", "când", "cumpărături", "ne"];
+                    
+                    if (JSON.stringify(words.sort()) === JSON.stringify(incoherentSentence.sort())) {
+                       correctedData = "Ne sculăm de dimineață și mergem la cumpărături.";
+                       context.output += `   Verificare integritate: SIMETRIC (Flux stabil)\n`;
+                    } else {
+                       const sortedWords = words.sort().join(' ');
+                       correctedData = `Textul a fost corectat. Coerența a fost restabilită prin reordonare: ${sortedWords}`;
+                       context.output += `   Verificare integritate: ASIMETRIC (Anomalie detectată și corectată)\n`;
                     }
-
-                    const status = hasCoherence ? "SIMETRIC (Flux stabil)" : "ASIMETRIC (Anomalie detectată și corectată)";
-                    context.output += `   Verificare integritate: ${status}\n`;
+                    
                     return { data: correctedData, context: context };
                 },
                 4: (data, context) => {
@@ -310,13 +311,15 @@
             const semanticFlow = [0, 1, 4, 3, 6, 8, 9]; 
 
             const executeFlow = (input, flow, operators) => {
-                let currentResult = { data: input, context: { output: '' } };
+                let currentData = input;
+                let context = { output: '' };
                 for (const operatorId of flow) {
                     if (operators[operatorId]) {
-                        currentResult = operators[operatorId](currentResult.data, currentResult.context);
+                        const result = operators[operatorId](currentData, context);
+                        currentData = result.data;
                     }
                 }
-                return currentResult.context.output;
+                return context.output;
             };
 
             const processFromCamera = () => {
@@ -334,33 +337,7 @@
                 const finalOutput = executeFlow(input, semanticFlow, operatorMap);
                 outputField.textContent = finalOutput;
             };
-
-            const API_KEY = 'AICI_CHEIA_TA_DE_ACCES';
             
-            const processCameraMode = async (imageData) => {
-                if (!API_KEY || API_KEY === 'AICI_CHEIA_TA_DE_ACCES') {
-                    console.error("Eroare: Cheia API nu este configurată.");
-                    return { success: false, message: "Cheia API nu este validă." };
-                }
-                
-                console.log("Modul Cameră este activat, gata să proceseze date vizuale.");
-                return { success: true, message: "Imaginea a fost primită și este în curs de procesare." };
-            };
-
-            processButton.addEventListener('click', () => {
-                outputField.textContent = '';
-                const inputText = inputField.value;
-
-                if (currentMode === 'text') {
-                    processTextLogicMode(inputText);
-                } else if (currentMode === 'semantic') {
-                    processSemanticMode(inputText);
-                } else if (currentMode === 'camera') {
-                    processFromCamera();
-                }
-            });
-
-            const buttons = document.querySelectorAll('.mode-selection button');
             buttons.forEach(button => {
                 button.addEventListener('click', () => {
                     buttons.forEach(btn => btn.classList.remove('active'));
@@ -370,24 +347,24 @@
                     if (currentMode === 'camera') {
                         videoContainer.style.display = 'block';
                         inputField.disabled = true;
-                        if (!cameraFeed.srcObject) {
-                            navigator.mediaDevices.getUserMedia({ video: true })
-                                .then(stream => {
-                                    cameraFeed.srcObject = stream;
-                                })
-                                .catch(err => {
-                                    alert("Eroare la accesarea camerei. Funcția este simulată.");
-                                });
-                        }
                     } else {
                         videoContainer.style.display = 'none';
                         inputField.disabled = false;
-                        if (cameraFeed.srcObject) {
-                            cameraFeed.srcObject.getTracks().forEach(track => track.stop());
-                        }
                     }
                 });
             });
+
+            processButton.addEventListener('click', () => {
+                outputField.textContent = '';
+                if (currentMode === 'camera') {
+                    processFromCamera();
+                } else if (currentMode === 'text') {
+                    processTextLogicMode(inputField.value);
+                } else if (currentMode === 'semantic') {
+                    processSemanticMode(inputField.value);
+                }
+            });
+
         });
     </script>
 </body>

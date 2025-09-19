@@ -219,9 +219,19 @@
                 } catch { return NaN; }
             }
 
+            // Aici definim starea globală a sistemului
+            let systemState = {
+                isSymmetricallyCoherent: true,
+                isAsymmetricallyCoherent: false,
+                finalResult: ""
+            };
+
             const operatorMap = {
                 '0': (data, context) => {
+                    // Implementarea dualității operatorului 0
+                    const isZeroDual = data.trim() === "0" || data.trim() === "√0";
                     context.output += `\n[0. Radical] - Punct de start, ancoră.\n`;
+                    context.output += `   Dualitate: ${isZeroDual ? 'Activată' : 'Dezactivată'}\n`;
                     context.output += `   Input: "${data.substring(0, 50)}..."\n`;
                     return { data, context };
                 },
@@ -238,27 +248,41 @@
                 },
                 '3': (data, context) => {
                     context.output += `\n[3. În Oglindă] - Repară greșeli, menține simetria. (Corectează)\n`;
+
+                    // Logică pentru corelarea simetrică (ordinea logică)
+                    const timeRegex = /(\d{1,2}):(\d{2})/;
+                    const matches = data.match(new RegExp(timeRegex, 'g'));
+                    let hasSymmetricalIncoherence = false;
                     
-                    const wordCount = data.split(/\s+/).filter(w => w).length;
-                    const charCount = data.length;
-                    let hasIncoherence = false;
-
-                    // Heuristic pentru a detecta inconsecvența.
-                    // Poți adăuga aici o logică mai avansată, de exemplu
-                    // un dicționar de cuvinte sau reguli de gramatică.
-                    // Pentru demonstrație, verificăm dacă textul este prea scurt
-                    // sau dacă conține cuvinte scrise ciudat.
-                    const commonWords = ["un", "o", "in", "pe", "la", "cu", "si", "este", "sa"];
-                    const words = data.toLowerCase().split(/\s+/);
-                    const hasUncommonWords = words.some(word => word.length > 2 && !commonWords.includes(word));
-
-                    if (wordCount < 3 || charCount < 10 || hasUncommonWords) {
-                         hasIncoherence = true;
+                    if (matches && matches.length >= 2) {
+                        const firstTime = parseInt(matches[0].split(':')[0]);
+                        const secondTime = parseInt(matches[1].split(':')[0]);
+                        if (secondTime < firstTime) {
+                            hasSymmetricalIncoherence = true;
+                        }
                     }
 
-                    if (hasIncoherence) {
-                         context.output += `   - **Anomalie rezolvată!** Incoerență detectată și corectată semantic.\n`;
+                    // Logica pentru corelarea asimetrică (haosul creativ)
+                    const words = data.trim().toLowerCase().split(/\s+/).filter(w => w);
+                    const avgWordLength = words.length ? words.reduce((sum, word) => sum + word.length, 0) / words.length : 0;
+                    const hasAsymmetricalCoherence = (words.length > 5 && (data.includes("poezie") || data.includes("concept") || data.includes("creație")));
+
+                    if (hasSymmetricalIncoherence) {
+                        systemState.isSymmetricallyCoherent = false;
+                        context.output += `   - **Anomalie rezolvată!** Incoerență simetrică (logică) detectată.\n`;
+                    } else if (!hasSymmetricalIncoherence && hasAsymmetricalCoherence) {
+                        systemState.isAsymmetricallyCoherent = true;
+                        context.output += `   - **Corelare asimetrică!** Incoerență creativă validată ca fiind coerentă.
+                        Feedback: Se adaptează la date neomogene, menținând stabilitatea.\n`;
+                    } else if (words.length < 3) {
+                         systemState.isSymmetricallyCoherent = false;
+                         context.output += `   - **Anomalie!** Lipsă de conținut suficient. Incoerență detectată.\n`;
                     }
+                    
+                    if (systemState.isSymmetricallyCoherent && !systemState.isAsymmetricallyCoherent) {
+                         context.output += `   - Text valid. Nu necesită corecții.\n`;
+                    }
+                    
                     return { data, context };
                 },
                 '4': (data, context) => {
@@ -268,7 +292,7 @@
                 },
                 '5': (data, context) => {
                     context.output += `\n[5. Punct de Control] - Monitorizează și validează.\n`;
-                    const isValid = !data.toLowerCase().includes("nevalid");
+                    const isValid = !context.output.includes("Anomalie") || context.output.includes("Corelare asimetrică");
                     context.output += `   Stare de validare: ${isValid ? 'VALID' : 'INVALID'}\n`;
                     return { data, context, isValid };
                 },
@@ -280,7 +304,7 @@
                 },
                 '7': (data, context) => {
                     context.output += `\n[7. Feedback și Ajustare] - Îmbunătățește performanța.\n`;
-                    const hasError = context.output.includes("INVALID") || context.output.includes("Anomalie");
+                    const hasError = context.output.includes("INVALID");
                     const feedback = hasError ? "Se aplică ajustări automate pentru a menține stabilitatea." : "Sistemul funcționează optim.";
                     context.output += `   Feedback: ${feedback}\n`;
                     return { data, context };
@@ -308,12 +332,33 @@
                     context.output += `   Expansiune asimetrică: Se adaptează la date neomogene, menținând stabilitatea. Se bazează pe log pentru a măsura complexitatea.
                     Valoare log(${data.length}): ${complexity.toFixed(4)}\n`;
                     return { data, context };
+                },
+                 '12': (data, context) => {
+                    context.output += `\n[12. Sin-Genesis] - Creează un concept unic. (Final)\n`;
+                    
+                    let finalConcept = "";
+                    if (systemState.isSymmetricallyCoherent && !systemState.isAsymmetricallyCoherent) {
+                         finalConcept = "Conceptul este logic și coerent. Poate fi un principiu, o regulă sau un plan.";
+                    } else if (systemState.isAsymmetricallyCoherent) {
+                         finalConcept = "Conceptul este non-standard, dar creativ. Poate fi o viziune artistică sau o inovație.";
+                    } else {
+                         finalConcept = "Datele nu sunt suficient de coerente pentru a genera un concept. Încercați din nou.";
+                    }
+                    systemState.finalResult = finalConcept;
+                    context.output += `   Rezultat: ${systemState.finalResult}\n`;
+                    return { data, context };
                 }
             };
 
-            const coreFlow = ['0', '1', '5', '4', '2', '8', '3', '6', '7', '9', '10²∞', '11²∞'];
+            const coreFlow = ['0', '1', '5', '4', '2', '8', '3', '6', '7', '9', '10²∞', '11²∞', '12'];
 
             const executeFlow = (input, flow, operators) => {
+                 // Resetăm starea la fiecare execuție
+                systemState = {
+                    isSymmetricallyCoherent: true,
+                    isAsymmetricallyCoherent: false,
+                    finalResult: ""
+                };
                 let currentResult = { data: input, context: { output: '' } };
                 for (const operatorId of flow) {
                     if (operators[operatorId]) {
@@ -344,4 +389,5 @@
     </script>
 
 </body>
-</html>
+    </html>
+    

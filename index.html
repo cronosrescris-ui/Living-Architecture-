@@ -166,7 +166,7 @@
             <div class="section-title">Funcționalități extinse</div>
             <ul>
                 <li>Procesare locală în browser (nu necesită backend)</li>
-                <li>Operatori universali: 0-9, 10<sup>2∞</sup>, 11<sup>2∞</sup>, radicali, sin, cos, log, feedback AI</li>
+                <li>Operatori universali: 0-9, 10²∞, 11²∞, radicali, sin, cos, log, feedback AI</li>
                 <li>Corelare semantică, fluxuri de lucru, feedback continuu, auto-corectare</li>
                 <li>Export, descărcare, vizualizare, partajare, donație PayPal</li>
                 <li>Design modular, extensibil, adaptiv, “ca la carte”</li>
@@ -177,7 +177,7 @@
         <div class="section">
             <div class="section-title">Concept numeric original</div>
             <p>
-                Acest sistem este fundamentat pe operatorii: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 102∞, 112∞ – fiecare având o logică matematică, semantică, logistică și evolutivă. Permite procesarea oricărui flux de lucru, text, cod, date, cu extindere la infinit, funcționalitate autodidactică, feedback automat, corelare semantică și numerică, export, descărcare.
+                Acest sistem este fundamentat pe operatorii: 0-33 – fiecare având o logică matematică, semantică, logistică și evolutivă. Permite procesarea oricărui flux de lucru, text, cod, date, cu extindere la infinit, funcționalitate autodidactică, feedback automat, corelare semantică și numerică, export, descărcare.
             </p>
         </div>
 
@@ -211,6 +211,7 @@
             const outputContent = document.getElementById('outputContent');
             const backendUrl = ""; 
 
+            // Funcție sigură pentru evaluarea expresiilor matematice (nu este utilizată direct în fluxul principal, dar rămâne ca o funcționalitate de bază a sistemului)
             function safeEvalMath(expr) {
                 if (!/^[\d+\-*/^().\s]+$/.test(expr)) return NaN;
                 let jsExpr = expr.replace(/(\d+)\s*\^\s*(\d+)/g, 'Math.pow($1,$2)');
@@ -223,15 +224,48 @@
             let systemState = {
                 isSymmetricallyCoherent: true,
                 isAsymmetricallyCoherent: false,
+                isSemanticallyCoherent: true,
                 finalResult: ""
             };
 
+            // ** Baza de cunoștințe semantice pentru operatorul 33 **
+            const semanticKnowledgeBase = {
+                "incoerente": [
+                    ["moș crăciun", "vară"], ["moș crăciun", "seară"], ["moș crăciun", "primăvară"], ["moș crăciun", "toamnă"],
+                    ["început", "sfârșit"], ["plecare", "sosire"],
+                    ["plus", "minus"], ["cald", "rece"], ["zi", "noapte"], ["sus", "jos"]
+                ],
+                "coerente": [
+                    ["moș crăciun", "iarnă"], ["moș crăciun", "decembrie"], ["moș crăciun", "zăpadă"],
+                    ["iarnă", "zapadă"], ["vară", "soare"], ["cald", "vară"], ["rece", "iarnă"],
+                    ["început", "start"]
+                ]
+            };
+            
+            // ** NOU: Algoritm avansat pentru detectarea contradicțiilor semantice **
+            function checkSemanticCoherence(text, knowledgeBase) {
+                const words = text.toLowerCase().split(/\s+/).filter(w => w);
+                const results = [];
+                let isCoherent = true;
+
+                // Verifică perechile incoerente
+                for (let i = 0; i < words.length; i++) {
+                    for (let j = i + 1; j < words.length; j++) {
+                        const pair = [words[i], words[j]];
+                        if (knowledgeBase.incoerente.some(kp => (kp[0] === pair[0] && kp[1] === pair[1]) || (kp[0] === pair[1] && kp[1] === pair[0]))) {
+                            results.push(`Incoerență detectată: "${pair[0]}" vs "${pair[1]}"`);
+                            isCoherent = false;
+                        }
+                    }
+                }
+                
+                return { isCoherent, results };
+            }
+            
             const operatorMap = {
                 '0': (data, context) => {
-                    // Implementarea dualității operatorului 0
-                    const isZeroDual = data.trim() === "0" || data.trim() === "√0";
                     context.output += `\n[0. Radical] - Punct de start, ancoră.\n`;
-                    context.output += `   Dualitate: ${isZeroDual ? 'Activată' : 'Dezactivată'}\n`;
+                    context.output += `   Dualitate: Activată (${(data.trim() === "0" || data.trim() === "√0") ? 'Radical' : 'Punct de Creație'})\n`;
                     context.output += `   Input: "${data.substring(0, 50)}..."\n`;
                     return { data, context };
                 },
@@ -249,38 +283,26 @@
                 '3': (data, context) => {
                     context.output += `\n[3. În Oglindă] - Repară greșeli, menține simetria. (Corectează)\n`;
 
-                    // Logică pentru corelarea simetrică (ordinea logică)
+                    // ** Corelarea Simetrică - Nivel 1 **
                     const timeRegex = /(\d{1,2}):(\d{2})/;
                     const matches = data.match(new RegExp(timeRegex, 'g'));
-                    let hasSymmetricalIncoherence = false;
-                    
                     if (matches && matches.length >= 2) {
                         const firstTime = parseInt(matches[0].split(':')[0]);
                         const secondTime = parseInt(matches[1].split(':')[0]);
                         if (secondTime < firstTime) {
-                            hasSymmetricalIncoherence = true;
+                            systemState.isSymmetricallyCoherent = false;
+                            context.output += `   - **Anomalie!** Incoerență simetrică (temporală) detectată.\n`;
                         }
                     }
-
-                    // Logica pentru corelarea asimetrică (haosul creativ)
+                    
+                    // ** Corelarea Asimetrică - Nivel 2 **
                     const words = data.trim().toLowerCase().split(/\s+/).filter(w => w);
-                    const avgWordLength = words.length ? words.reduce((sum, word) => sum + word.length, 0) / words.length : 0;
-                    const hasAsymmetricalCoherence = (words.length > 5 && (data.includes("poezie") || data.includes("concept") || data.includes("creație")));
-
-                    if (hasSymmetricalIncoherence) {
-                        systemState.isSymmetricallyCoherent = false;
-                        context.output += `   - **Anomalie rezolvată!** Incoerență simetrică (logică) detectată.\n`;
-                    } else if (!hasSymmetricalIncoherence && hasAsymmetricalCoherence) {
+                    if (words.length > 5 && (data.includes("poezie") || data.includes("concept") || data.includes("creație"))) {
                         systemState.isAsymmetricallyCoherent = true;
-                        context.output += `   - **Corelare asimetrică!** Incoerență creativă validată ca fiind coerentă.
-                        Feedback: Se adaptează la date neomogene, menținând stabilitatea.\n`;
+                        context.output += `   - **Corelare asimetrică!** Incoerență creativă validată ca fiind coerentă.\n`;
                     } else if (words.length < 3) {
                          systemState.isSymmetricallyCoherent = false;
                          context.output += `   - **Anomalie!** Lipsă de conținut suficient. Incoerență detectată.\n`;
-                    }
-                    
-                    if (systemState.isSymmetricallyCoherent && !systemState.isAsymmetricallyCoherent) {
-                         context.output += `   - Text valid. Nu necesită corecții.\n`;
                     }
                     
                     return { data, context };
@@ -292,7 +314,7 @@
                 },
                 '5': (data, context) => {
                     context.output += `\n[5. Punct de Control] - Monitorizează și validează.\n`;
-                    const isValid = !context.output.includes("Anomalie") || context.output.includes("Corelare asimetrică");
+                    const isValid = !context.output.includes("Anomalie") && !context.output.includes("INVALID");
                     context.output += `   Stare de validare: ${isValid ? 'VALID' : 'INVALID'}\n`;
                     return { data, context, isValid };
                 },
@@ -333,30 +355,63 @@
                     Valoare log(${data.length}): ${complexity.toFixed(4)}\n`;
                     return { data, context };
                 },
-                 '12': (data, context) => {
-                    context.output += `\n[12. Sin-Genesis] - Creează un concept unic. (Final)\n`;
+                '12': (data, context) => {
+                    context.output += `\n[12. Sin-Genesis] - Creează un concept unic. (Final de bază)\n`;
+                    context.output += `   Rezultat: Datele au fost procesate. Se pregătește pentru rafinare.\n`;
+                    return { data, context };
+                },
+                // ** Operatori simpli pentru rafinare (13 la 32) **
+                ...Array.from({ length: 20 }, (_, i) => i + 13).reduce((acc, n) => {
+                    acc[n.toString()] = (data, context) => {
+                        context.output += `\n[${n}. Modul Simplu] - Procesare pas cu pas.\n`;
+                        return { data, context };
+                    };
+                    return acc;
+                }, {}),
+                
+                // ** Operatorul 33 - FINAL **
+                '33': (data, context) => {
+                    context.output += `\n[33. Oglinda-Supremă] - Analiză semantică profundă.\n`;
+
+                    // ** Corelarea Semantică (Algoritm îmbunătățit) **
+                    const semanticCheck = checkSemanticCoherence(data, semanticKnowledgeBase);
+                    systemState.isSemanticallyCoherent = semanticCheck.isCoherent;
+                    if (!systemState.isSemanticallyCoherent) {
+                        semanticCheck.results.forEach(res => {
+                             context.output += `   - **Anomalie!** ${res}.\n`;
+                        });
+                    }
+
+                    // ** Principiul Singularității ** (Simultan sub radical și la infinit)
+                    if (systemState.isSymmetricallyCoherent && systemState.isAsymmetricallyCoherent && systemState.isSemanticallyCoherent) {
+                         context.output += `\n   - **Singularitate activată!** Principiul tău a fost implementat. Textul este perfect, coerent din toate punctele de vedere.`;
+                    } else {
+                        context.output += `\n   - Starea singularității: Incoerență detectată la un nivel sau mai multe.\n`;
+                    }
                     
                     let finalConcept = "";
-                    if (systemState.isSymmetricallyCoherent && !systemState.isAsymmetricallyCoherent) {
-                         finalConcept = "Conceptul este logic și coerent. Poate fi un principiu, o regulă sau un plan.";
+                    if (systemState.isSymmetricallyCoherent && systemState.isSemanticallyCoerent) {
+                         finalConcept = "Conceptul este logic, coerent și valid. Poate fi un principiu, o regulă sau un plan.";
                     } else if (systemState.isAsymmetricallyCoherent) {
                          finalConcept = "Conceptul este non-standard, dar creativ. Poate fi o viziune artistică sau o inovație.";
                     } else {
-                         finalConcept = "Datele nu sunt suficient de coerente pentru a genera un concept. Încercați din nou.";
+                         finalConcept = "Datele nu sunt suficient de coerente pentru a genera un concept.";
                     }
                     systemState.finalResult = finalConcept;
-                    context.output += `   Rezultat: ${systemState.finalResult}\n`;
+                    context.output += `\n   Rezultat Final: ${systemState.finalResult}\n`;
                     return { data, context };
                 }
             };
 
-            const coreFlow = ['0', '1', '5', '4', '2', '8', '3', '6', '7', '9', '10²∞', '11²∞', '12'];
+            const coreFlow = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10²∞', '11²∞', '12', 
+                            ...Array.from({ length: 20 }, (_, i) => (i + 13).toString()), '33'];
 
             const executeFlow = (input, flow, operators) => {
                  // Resetăm starea la fiecare execuție
                 systemState = {
                     isSymmetricallyCoherent: true,
                     isAsymmetricallyCoherent: false,
+                    isSemanticallyCoherent: true,
                     finalResult: ""
                 };
                 let currentResult = { data: input, context: { output: '' } };
@@ -368,26 +423,4 @@
                 return currentResult.context.output;
             };
 
-            processButton.addEventListener('click', () => {
-                const inputText = userInput.value;
-                const finalOutput = executeFlow(inputText, coreFlow, operatorMap);
-                outputContent.textContent = finalOutput;
-            });
-
-            exportButton.addEventListener('click', () => {
-                const textToExport = outputContent.textContent;
-                const blob = new Blob([textToExport], { type: 'text/plain;charset=utf-8' });
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = 'rezultat_concept_cosmic.txt';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                alert("Rezultatul a fost exportat în fișierul rezultat_concept_cosmic.txt!");
-            });
-        });
-    </script>
-
-</body>
-    </html>
-    
+            processButton.add

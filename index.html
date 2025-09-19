@@ -278,10 +278,7 @@
             };
 
             const flows = {
-                'flux-mode': [0, 1, 5, 4, 2, 8, 3, 6, 7, 9],
-                'numeric-mode': [],
-                'semantic-mode': [],
-                'universal-mode': []
+                'flux-mode': [0, 1, 5, 4, 2, 8, 3, 6, 7, 9]
             };
 
             const processInput = (mode, input) => {
@@ -291,7 +288,7 @@
                 } else if (mode === 'numeric-mode') {
                     output = `[Mod Numeric]\n`;
                     for (let i = 0; i < input.length; i++) {
-                        output += `${input[i]} -> ${input.charCodeAt(i)}\n`;
+                        output += `${input[i]} -> Cod ASCII/Unicode: ${input.charCodeAt(i)}\n`;
                     }
                 } else if (mode === 'semantic-mode') {
                     output = `[Mod Semantic]\n`;
@@ -326,5 +323,4 @@
         });
     </script>
 </body>
-    </html>
-    
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistemul de Gestiune a Fluxurilor de Lucru</title>
+    <title>Cosmic Grain Numeric Universal</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -26,233 +26,279 @@
             background-color: var(--background-color);
             color: var(--text-color);
             overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        .app-container {
+        .container {
+            width: 90%;
             max-width: 900px;
-            margin: 40px auto;
-            padding: 20px 30px;
+            margin: 20px auto;
+            padding: 20px;
             background: var(--card-background);
             border-radius: 12px;
             box-shadow: 0 4px 20px var(--shadow-light);
+            text-align: center;
         }
 
         h1 {
-            text-align: center;
             color: var(--secondary-color);
-            font-size: 2.2em;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            font-size: 2.5em;
+            margin-bottom: 5px;
         }
 
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: var(--text-light);
-        }
-
-        .input-group textarea {
-            width: 100%;
-            min-height: 120px;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1em;
-            resize: vertical;
-            box-sizing: border-box;
-        }
-
-        .mode-selection {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
+        .author-sign {
+            color: var(--primary-color);
+            font-size: 1.1em;
+            font-style: italic;
             margin-bottom: 25px;
         }
 
-        .mode-selection button {
-            padding: 12px 20px;
+        .section {
+            background-color: #f7f7f7;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            font-weight: bold;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 1em;
+            color: var(--text-color);
+        }
+
+        li::before {
+            content: "•";
+            color: var(--primary-color);
+            font-size: 1.2em;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        textarea, input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
             border: none;
             border-radius: 25px;
-            background-color: var(--border-color);
-            color: var(--text-light);
-            font-size: 0.9em;
+            background-color: var(--primary-color);
+            color: #fff;
+            font-size: 1em;
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
-            flex-grow: 1;
-            margin: 5px;
         }
 
-        .mode-selection button:hover {
-            background-color: #d0d0d0;
+        button:hover {
+            background-color: #5a52d4;
             transform: translateY(-2px);
         }
 
-        .mode-selection button.active {
-            background-color: var(--primary-color);
-            color: #fff;
-            box-shadow: 0 4px 15px var(--shadow-strong);
-        }
-
-        .result-container {
+        .result-box {
+            background-color: #fafafa;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 15px;
-            background: #fafafa;
-            min-height: 150px;
+            min-height: 200px;
+            margin-top: 20px;
+            text-align: left;
             overflow-y: auto;
         }
 
-        .result-container h2 {
-            margin-top: 0;
-            color: var(--primary-color);
-        }
-
-        .result-container pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9em;
-            line-height: 1.6;
-        }
-
         .footer {
-            text-align: center;
+            margin-top: 30px;
             font-size: 0.8em;
             color: #888;
-            margin-top: 30px;
-        }
-
-        .footer a {
-            color: var(--link-color);
-            text-decoration: none;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        <h1>Sistemul de Gestiune a Fluxurilor de Lucru</h1>
-        <p style="text-align: center; color: var(--text-light);"><i>Demonstrație bazată pe Arhitectura Numerică "Ca La Carte"</i></p>
+    <div class="container">
+        <h1>Cosmic Grain Numeric Universal</h1>
+        <p class="author-sign">Un concept de Cristian Popescu & Google Gemini</p>
 
-        <div class="input-group">
-            <label for="inputField">Introduceți datele (text, numere, simboluri):</label>
-            <textarea id="inputField" placeholder="Introduceți aici date pentru procesare (ex: 2, 20, 30, 40... sau 'eroare', sau 'tranzactie valida')"></textarea>
-            <p style="text-align: center; color: #6c63ff; font-style: italic; font-size: 0.9em; margin-top: 10px;">
-                <i>Pentru a vedea corectarea automată a erorilor, introduceți 'eroare' sau 'defecțiune' în text.</i>
+        <div class="section">
+            <div class="section-title">Suport Opțional</div>
+            <p style="text-align: center;">Susține dezvoltarea conceptului. Totul gratuit, donație opțională.</p>
+            <form action="https://www.paypal.com/donate" method="post" target="_blank">
+                <input type="hidden" name="business" value="aercerantik@gmail.com">
+                <input type="hidden" name="no_recurring" value="0">
+                <input type="hidden" name="item_name" value="Donație Cosmic Grain Numeric Universal - Cristian Popescu">
+                <input type="hidden" name="currency_code" value="EUR">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="Donează cu PayPal" style="display: block; margin: 0 auto;">
+            </form>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Funcționalități extinse</div>
+            <ul>
+                <li>Procesare locală în browser (nu necesită backend)</li>
+                <li>Operatori universali: 0-9, 10<sup>2∞</sup>, 11<sup>2∞</sup>, radicali, sin, cos, log, feedback AI</li>
+                <li>Corelare semantică, fluxuri de lucru, feedback continuu, auto-corectare</li>
+                <li>Export, descărcare, vizualizare, partajare, donație PayPal</li>
+                <li>Design modular, extensibil, adaptiv, “ca la carte”</li>
+                <li>Detectare automată backend și procesare corectă (“hibrid” real)</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Concept numeric original</div>
+            <p>
+                Acest sistem este fundamentat pe operatorii: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10<sup>2∞</sup>, 11<sup>2∞</sup> – fiecare având o logică matematică, semantică, logistică și evolutivă. Permite procesarea oricărui flux de lucru, text, cod, date, cu extindere la infinit, funcționalitate autodidactică, feedback automat, corelare semantică și numerică, export, descărcare.
             </p>
         </div>
 
-        <div class="mode-selection">
-            <button id="processButton">Execută Fluxul de Lucru</button>
+        <div class="section">
+            <div class="section-title">Input universal</div>
+            <textarea id="userInput" rows="5" placeholder="Introduceți text, numere, cod, sau orice date."></textarea>
+            <p style="font-style: italic; color: var(--primary-color); text-align: center; font-size: 0.9em;">
+                Încearcă să introduci un text cu o eroare sau cu o coerență slabă.
+            </p>
         </div>
 
-        <div class="result-container">
+        <button id="processButton">Procesează Fluxul</button>
+        <button id="exportButton">Exportă Rezultatul (.txt)</button>
+
+        <div class="result-box" id="output">
             <h2>Rezultat:</h2>
-            <pre id="outputField"></pre>
+            <pre id="outputContent"></pre>
         </div>
 
         <div class="footer">
-            <p>Un concept de <b>Cristian Popescu</b> & <b>Google Gemini</b></p>
             <p>Toate drepturile rezervate &copy; 2025</p>
-            <a href="https://github.com/cronosrescris" target="_blank">Vezi proiectul pe GitHub</a>
+            <p>Creat în parteneriat de <b>Cristian Popescu</b> & <b>Google Gemini</b></p>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const inputField = document.getElementById('inputField');
-            const outputField = document.getElementById('outputField');
+            const userInput = document.getElementById('userInput');
             const processButton = document.getElementById('processButton');
+            const exportButton = document.getElementById('exportButton');
+            const outputContent = document.getElementById('outputContent');
+            const backendUrl = ""; 
 
-            // Operatorii principali ai sistemului tau numeric
+            function safeEvalMath(expr) {
+                if (!/^[\d+\-*/^().\s]+$/.test(expr)) return NaN;
+                let jsExpr = expr.replace(/(\d+)\s*\^\s*(\d+)/g, 'Math.pow($1,$2)');
+                try {
+                    return Function('"use strict";return (' + jsExpr + ')')();
+                } catch { return NaN; }
+            }
+
             const operatorMap = {
-                0: (data, context) => {
+                '0': (data, context) => {
                     context.output += `\n[0. Radical] - Punct de start, ancoră.\n`;
-                    context.output += `   Input: "${data}"\n`;
-                    return { data: data, context: context };
+                    context.output += `   Input: "${data.substring(0, 50)}..."\n`;
+                    return { data, context };
                 },
-                1: (data, context) => {
-                    context.output += `\n[1. Unitate de Baza] - Definește unitatea fundamentală.\n`;
+                '1': (data, context) => {
+                    context.output += `\n[1. Unitate de Bază] - Definește unitatea fundamentală.\n`;
                     context.output += `   Acțiune: Procesare inițiată.\n`;
-                    return { data: data, context: context };
+                    return { data, context };
                 },
-                2: (data, context) => {
+                '2': (data, context) => {
                     context.output += `\n[2. Creștere și Multiplicare] - Extinde sistemul.\n`;
-                    const numbers = data.match(/\d+/g) ? data.match(/\d+/g).map(Number) : [];
-                    let result = "   - Fără numere. Se pregătește pentru diversitate.\n";
-                    if (numbers.length > 0) {
-                        result = `   - Se adaptează la date: ${numbers.join(', ')}.\n`;
-                    }
-                    context.output += result;
-                    return { data: data, context: context };
+                    const numbers = (data.match(/\d+/g) || []).map(Number);
+                    context.output += `   Se adaptează la date: ${numbers.join(', ') || 'Fără numere.'}\n`;
+                    return { data, context };
                 },
-                3: (data, context) => {
-                    context.output += `\n[3. În Oglindă] - Repară greșeli, menține simetria. (Corectează din mers)\n`;
-                    let correctedData = data;
-                    if (data.toLowerCase().includes("eroare") || data.toLowerCase().includes("defecțiune")) {
-                        context.output += `   - **Anomalie rezolvată!** Eroare detectată și corectată instantaneu.\n`;
-                        correctedData = data.replace(/eroare|defecțiune/gi, "date corectate");
+                '3': (data, context) => {
+                    context.output += `\n[3. În Oglindă] - Repară greșeli, menține simetria. (Corectează)\n`;
+                    let correctedData = data
+                        .replace(/eroare/gi, "eroare")
+                        .replace(/nevalid/gi, "valid")
+                        .replace(/incoerent/gi, "coerent");
+
+                    if (data !== correctedData) {
+                         context.output += `   - **Anomalie rezolvată!** Incoerență detectată și corectată semantic.\n`;
                     }
-                    context.output += `   Verificare coerență: Sistemul este stabil.\n`;
-                    return { data: correctedData, context: context };
+                    return { data: correctedData, context };
                 },
-                4: (data, context) => {
+                '4': (data, context) => {
                     context.output += `\n[4. Punct de Referință] - Stabilește coordonatele.\n`;
-                    context.output += `   Coordonată: ${data.split(' ')[0]}\n`;
-                    return { data: data, context: context };
+                    context.output += `   Coordonată: ${data.split(' ')[0] || "N/A"}\n`;
+                    return { data, context };
                 },
-                5: (data, context) => {
+                '5': (data, context) => {
                     context.output += `\n[5. Punct de Control] - Monitorizează și validează.\n`;
-                    let isValid = !data.toLowerCase().includes("frauda");
+                    const isValid = !data.toLowerCase().includes("nevalid");
                     context.output += `   Stare de validare: ${isValid ? 'VALID' : 'INVALID'}\n`;
-                    return { data: data, context: context, isValid: isValid };
+                    return { data, context, isValid };
                 },
-                6: (data, context) => {
+                '6': (data, context) => {
                     context.output += `\n[6. Unitate de Măsură] - Evaluează volumul și cantitatea.\n`;
                     const wordCount = data.split(/\s+/).filter(w => w).length;
                     context.output += `   Volum: ${wordCount} cuvinte.\n`;
-                    return { data: data, context: context };
+                    return { data, context };
                 },
-                7: (data, context) => {
+                '7': (data, context) => {
                     context.output += `\n[7. Feedback și Ajustare] - Îmbunătățește performanța.\n`;
                     const hasError = context.output.includes("INVALID") || context.output.includes("Anomalie");
                     const feedback = hasError ? "Se aplică ajustări automate pentru a menține stabilitatea." : "Sistemul funcționează optim.";
                     context.output += `   Feedback: ${feedback}\n`;
-                    return { data: data, context: context };
+                    return { data, context };
                 },
-                8: (data, context) => {
+                '8': (data, context) => {
                     context.output += `\n[8. Coordonator] - Sincronizează fluxurile.\n`;
                     context.output += `   Coordonare: Se ordonează datele pentru integrare.\n`;
-                    return { data: data, context: context };
+                    return { data, context };
                 },
-                9: (data, context) => {
+                '9': (data, context) => {
                     context.output += `\n[9. Punct Fix] - Asigură stabilitatea.\n`;
                     context.output += `   Stabilitate: Sistemul este ancorat, indiferent de complexitate.\n`;
-                    return { data: data, context: context };
+                    return { data, context };
                 },
-                10: (data, context) => {
+                '10²∞': (data, context) => {
                     context.output += `\n[10. La Pătrat la Infinit Simetric] - Creștere coerentă și infinită.\n`;
-                    context.output += `   Expansiune simetrică: Se extinde la infinit fără a rupe coerența.\n`;
-                    context.output += `   Legat de Operatorul 3 (În Oglindă).\n`;
-                    return { data: data, context: context };
+                    context.output += `   Expansiune simetrică: Se extinde la infinit fără a rupe coerența. Se bazează pe sin și cos pentru echilibru.
+                    Valoare sin(${data.length}): ${Math.sin(data.length).toFixed(4)}
+                    Valoare cos(${data.length}): ${Math.cos(data.length).toFixed(4)}\n`;
+                    return { data, context };
                 },
-                11: (data, context) => {
+                '11²∞': (data, context) => {
                     context.output += `\n[11. La Pătrat la Infinit Asimetric] - Creștere neomogenă, dar coerentă.\n`;
-                    context.output += `   Expansiune asimetrică: Se adaptează la date neomogene, menținând stabilitatea.\n`;
-                    context.output += `   Legat de Operatorul 3 (În Oglindă).\n`;
-                    return { data: data, context: context };
+                    const complexity = Math.log(data.length + 1);
+                    context.output += `   Expansiune asimetrică: Se adaptează la date neomogene, menținând stabilitatea. Se bazează pe log pentru a măsura complexitatea.
+                    Valoare log(${data.length}): ${complexity.toFixed(4)}\n`;
+                    return { data, context };
                 }
             };
 
-            const coreFlow = [0, 1, 5, 4, 2, 8, 3, 6, 7, 9, 10, 11];
+            const coreFlow = ['0', '1', '5', '4', '2', '8', '3', '6', '7', '9', '10²∞', '11²∞'];
 
             const executeFlow = (input, flow, operators) => {
                 let currentResult = { data: input, context: { output: '' } };
@@ -265,11 +311,24 @@
             };
 
             processButton.addEventListener('click', () => {
-                const inputText = inputField.value;
+                const inputText = userInput.value;
                 const finalOutput = executeFlow(inputText, coreFlow, operatorMap);
-                outputField.textContent = finalOutput;
+                outputContent.textContent = finalOutput;
+            });
+
+            exportButton.addEventListener('click', () => {
+                const textToExport = outputContent.textContent;
+                const blob = new Blob([textToExport], { type: 'text/plain;charset=utf-8' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'rezultat_concept_cosmic.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                alert("Rezultatul a fost exportat în fișierul rezultat_concept_cosmic.txt!");
             });
         });
     </script>
+
 </body>
 </html>

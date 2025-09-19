@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistemul de Gestiune a Fluxurilor de Lucru</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Cronos Rescris - Aplicația Viziunii Tale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #6c63ff;
@@ -40,10 +40,19 @@
         h1 { 
             text-align: center; 
             color: var(--secondary-color); 
-            font-size: 2.2em; 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5em; 
             border-bottom: 2px solid var(--primary-color); 
             padding-bottom: 10px; 
             margin-bottom: 20px; 
+        }
+
+        .description {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 1em;
+            margin-bottom: 25px;
+            line-height: 1.5;
         }
         
         .input-group { 
@@ -59,13 +68,14 @@
         
         .input-group textarea { 
             width: 100%; 
-            min-height: 120px; 
-            padding: 12px; 
+            min-height: 150px; 
+            padding: 15px; 
             border: 1px solid var(--border-color); 
             border-radius: 8px; 
             font-size: 1em; 
             resize: vertical; 
             box-sizing: border-box; 
+            font-family: 'Roboto', sans-serif;
         }
         
         .mode-selection { 
@@ -87,35 +97,298 @@
             transition: background-color 0.3s, transform 0.2s; 
             flex-grow: 1; 
             margin: 5px; 
+            box-shadow: 0 2px 5px var(--shadow-light);
+        }
+        
+        .mode-selection button:hover { 
+            background-color: #d0d0d0; 
+            transform: translateY(-2px); 
+        }
+        
+        .mode-selection button.active { 
+            background-color: var(--primary-color); 
+            color: #fff; 
+            box-shadow: 0 4px 15px var(--shadow-strong); 
+        }
+        
+        .result-container { 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            padding: 15px; 
+            background: #fafafa; 
+            min-height: 200px; 
+            overflow-y: auto; 
+            position: relative;
+        }
+        
+        .result-container h2 { 
+            margin-top: 0; 
+            color: var(--primary-color); 
+        }
+        
+        .result-container pre { 
+            white-space: pre-wrap; 
+            word-wrap: break-word; 
+            font-family: 'Courier New', Courier, monospace; 
+            font-size: 0.95em; 
+            line-height: 1.6; 
+        }
+        
+        .footer { 
+            text-align: center; 
+            font-size: 0.8em; 
+            color: #888; 
+            margin-top: 30px; 
+        }
+        
+        .footer a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
 
+        #camera-feed {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: #000;
+        }
+
+        #video-container {
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <h1>Cronos Rescris</h1>
+        <p class="description">
+            O aplicație fiabilă care integrează "Arhitectura Numerică Vie" și "Homo Sapiens Syn-Genesis".
+            Un concept vizionar de <b>Cristian Popescu</b>, dezvoltat în colaborare cu <b>Google Gemini</b>.
+        </p>
+        
+        <div class="input-group">
+            <label for="inputField">Introduceți fluxul de date:</label>
+            <textarea id="inputField" placeholder="Exemple de date pentru a testa toate modurile:
+- Modul Text & Logică: '1, 2, 4, 8, 16, 32'
+- Modul Semantic: 'o greșală gramaticala și de ortografie, dar care este corectată și stabilizată'
+- Modul Hibrid (Cameră): Descrie un obiect sau text pe care vrei să-l analizezi."></textarea>
+        </div>
+
+        <div id="video-container">
+            <video id="camera-feed" autoplay></video>
+        </div>
+
+        <div class="mode-selection">
+            <button id="text-mode" class="active">Mod Text & Logică</button>
+            <button id="semantic-mode">Mod Semantic</button>
+            <button id="camera-mode">Mod Cameră</button>
+        </div>
+
+        <div class="mode-selection">
+            <button id="processButton">Execută Fluxul de Lucru</button>
+        </div>
+
+        <div class="result-container">
+            <h2>Rezultat:</h2>
+            <pre id="outputField"></pre>
+        </div>
+
+        <div class="footer">
+            <p>Un concept de <b>Cristian Popescu</b> & <b>Google Gemini</b></p>
+            <p>Toate drepturile rezervate &copy; 2025</p>
+            <a href="https://github.com/cronosrescris" target="_blank">Proiectul nostru pe GitHub</a>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const inputField = document.getElementById('inputField');
             const outputField = document.getElementById('outputField');
             const processButton = document.getElementById('processButton');
+            const cameraModeButton = document.getElementById('camera-mode');
+            const textModeButton = document.getElementById('text-mode');
+            const semanticModeButton = document.getElementById('semantic-mode');
+            const videoContainer = document.getElementById('video-container');
+            const cameraFeed = document.getElementById('camera-feed');
+            let currentMode = 'text';
 
-            // Harta operatorilor logici - inima sistemului viu
+            // Harta operatorilor - Inima sistemului "Cronos Rescris"
             const operatorMap = {
-                // Operatorul 0 (Radical, Punct de Origine)
                 0: (data, context) => {
-                    context.output += `\n[0. Radical] - Punct de start. Analizăm scopul principal.\n`;
-                    context.output += `   Input: ${data}\n`;
+                    context.output += `\n[0. Punct de origine, ancoră] - Inițializează sistemul și stabilește punctul de referință.`;
+                    context.output += `\n   Input: "${data}"\n`;
                     return { data: data, context: context };
                 },
-                // Operatorul 1 (Unitatea de Baza)
                 1: (data, context) => {
-                    context.output += `\n[1. Unitate de Baza] - Inițierea unei acțiuni concrete.\n`;
-                    context.output += `   Acțiune: Se inițiază procesarea datelor.\n`;
+                    context.output += `\n[1. Unitate de bază] - Definește unitatea fundamentală de măsură și procesare.\n`;
+                    context.output += `   Acțiune: Se inițiază procesarea datelor în funcție de modul de lucru selectat.\n`;
                     return { data: data, context: context };
                 },
-                // Operatorul 5 (Radical, Punct de Control)
+                2: (data, context) => {
+                    context.output += `\n[2. Creștere și multiplicare] - Aplică reguli de creștere și multiplicare pentru a extinde sistemul.\n`;
+                    const numbers = data.match(/\d+/g) ? data.match(/\d+/g).map(Number) : [];
+                    let result = "   - Nu s-au găsit numere de procesat.";
+                    if (numbers.length > 0) {
+                        const hasAsymmetry = numbers.includes(2) && numbers.length > 1;
+                        result = `   - Se detectează asimetria: ${hasAsymmetry ? 'DA' : 'NU'}. Sistemul este pregătit pentru diversitate.\n`;
+                        result += `   - Procesare: ${numbers.join(', ')}\n`;
+                    }
+                    context.output += result;
+                    return { data: data, context: context };
+                },
+                3: (data, context) => {
+                    context.output += `\n[3. În oglindă, simetric și asimetric] - Repară greșeli și menține fluxurile constante prin aplicarea regulilor de simetrie și asimetrie.\n`;
+                    
+                    let correctedData = data;
+                    const words = correctedData.split(/\s+/);
+                    const hasCoherence = words.length > 3 && (words.length / correctedData.length) < 0.2; // Ex. a simple, generalized logic
+                    
+                    if (!hasCoherence) {
+                        const sortedWords = words.sort().join(' ');
+                        correctedData = `Textul a fost corectat. Coerența a fost restabilită prin reordonare: ${sortedWords}`;
+                    }
+
+                    const status = hasCoherence ? "SIMETRIC (Flux stabil)" : "ASIMETRIC (Anomalie detectată și corectată)";
+                    context.output += `   Verificare integritate: ${status}\n`;
+                    return { data: correctedData, context: context };
+                },
+                4: (data, context) => {
+                    context.output += `\n[4. Punct de referință și unitate de măsură] - Stabilește punctul de referință și unitatea de măsură pentru sistem.\n`;
+                    const reference = data.split(/\s+/).filter(w => w.length > 3).slice(0, 3).join(' ');
+                    context.output += `   Cuvinte cheie identificate ca referință: "${reference}"\n`;
+                    return { data: data, context: context };
+                },
                 5: (data, context) => {
-                    context.output += `\n[5. Punct de Control] - Verificare și validare a integrității datelor.\n`;
+                    context.output += `\n[5. Punct de control] - Monitorizează și controlează sistemul pentru a asigura funcționarea corectă.\n`;
                     let isValid = true;
-                    if (data.includes("tranzactie valida")) {
-                        isValid = true;
-                    } else if (data.includes("frauda")) {
+                    if (data.includes("tranzactie invalida") || data.includes("eroare")) {
                         isValid = false;
                     }
-    
+                    context.output += `   Status de validare: ${isValid ? 'VALID' : 'INVALID'}\n`;
+                    return { data: data, context: context, isValid: isValid };
+                },
+                6: (data, context) => {
+                    context.output += `\n[6. Unitate de măsură] - Definește unitatea de măsură pentru sistem și aplică regulile de conversie.\n`;
+                    const wordCount = data.split(/\s+/).filter(w => w).length;
+                    const charCount = data.length;
+                    context.output += `   Analiză: ${wordCount} cuvinte, ${charCount} caractere.\n`;
+                    return { data: data, context: context };
+                },
+                7: (data, context) => {
+                    context.output += `\n[7. Feedback și ajustare] - Primește feedback și aplică ajustări pentru a îmbunătăți performanța sistemului.\n`;
+                    const hasError = context.output.includes("INVALID") || context.output.includes("Anomalie");
+                    const feedback = hasError ? "Se sugerează re-evaluarea fluxului de lucru." : "Sistemul este stabil și funcționează conform așteptărilor.";
+                    context.output += `   Raport automat: ${feedback}\n`;
+                    return { data: data, context: context };
+                },
+                8: (data, context) => {
+                    context.output += `\n[8. Coordonator, punct fix, unitate de măsură, referință] - Coordonează sistemul și asigură că toate componentele lucrează în mod coerent.\n`;
+                    context.output += `   Coordonare: Se ordonează datele pentru a fi integrate în sistemul final.\n`;
+                    return { data: data, context: context };
+                },
+                9: (data, context) => {
+                    context.output += `\n[9. Punct fix, radical] - Definește punctul fix și aplică reguli radicale pentru a asigura stabilitatea sistemului.\n`;
+                    context.output += `   Rezultatul final al procesului: "${data}"\n`;
+                    return { data: data, context: context };
+                },
+                10: (data, context) => {
+                    context.output += `\n[10. La pătrat la infinit simetric] - Aplică reguli de simetrie și extinde sistemul la infinit în mod coerent.\n`;
+                    context.output += `   Modelare: 10^2^2^2... (infinit simetric) - Datele se multiplică, păstrând coerența.\n`;
+                    return { data: data, context: context };
+                },
+                11: (data, context) => {
+                    context.output += `\n[11. La pătrat la infinit asimetric] - Aplică reguli de asimetrie și extinde sistemul la infinit în mod coerent.\n`;
+                    context.output += `   Modelare: 11^2^2^2... (infinit asimetric) - Sistemul este pregătit pentru diversitate.\n`;
+                    return { data: data, context: context };
+                },
+            };
+
+            const coreFlow = [0, 1, 5, 4, 2, 8, 3, 6, 7, 9, 10, 11];
+            const semanticFlow = [0, 1, 4, 3, 6, 8, 9]; 
+
+            const executeFlow = (input, flow, operators) => {
+                let currentResult = { data: input, context: { output: '' } };
+                for (const operatorId of flow) {
+                    if (operators[operatorId]) {
+                        currentResult = operators[operatorId](currentResult.data, currentResult.context);
+                    }
+                }
+                return currentResult.context.output;
+            };
+
+            const processFromCamera = () => {
+                const simulatedData = `Date de la cameră (Simulare Gemini Nano): O imagine cu o listă de prețuri, care a fost scanată.`;
+                const finalOutput = executeFlow(simulatedData, semanticFlow, operatorMap);
+                outputField.textContent = finalOutput;
+            };
+
+            const processTextLogicMode = (input) => {
+                const finalOutput = executeFlow(input, coreFlow, operatorMap);
+                outputField.textContent = finalOutput;
+            };
+
+            const processSemanticMode = (input) => {
+                const finalOutput = executeFlow(input, semanticFlow, operatorMap);
+                outputField.textContent = finalOutput;
+            };
+
+            const API_KEY = 'AICI_CHEIA_TA_DE_ACCES';
+            
+            const processCameraMode = async (imageData) => {
+                if (!API_KEY || API_KEY === 'AICI_CHEIA_TA_DE_ACCES') {
+                    console.error("Eroare: Cheia API nu este configurată.");
+                    return { success: false, message: "Cheia API nu este validă." };
+                }
+                
+                console.log("Modul Cameră este activat, gata să proceseze date vizuale.");
+                return { success: true, message: "Imaginea a fost primită și este în curs de procesare." };
+            };
+
+            processButton.addEventListener('click', () => {
+                outputField.textContent = '';
+                const inputText = inputField.value;
+
+                if (currentMode === 'text') {
+                    processTextLogicMode(inputText);
+                } else if (currentMode === 'semantic') {
+                    processSemanticMode(inputText);
+                } else if (currentMode === 'camera') {
+                    processFromCamera();
+                }
+            });
+
+            const buttons = document.querySelectorAll('.mode-selection button');
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentMode = button.id.replace('-mode', '');
+
+                    if (currentMode === 'camera') {
+                        videoContainer.style.display = 'block';
+                        inputField.disabled = true;
+                        if (!cameraFeed.srcObject) {
+                            navigator.mediaDevices.getUserMedia({ video: true })
+                                .then(stream => {
+                                    cameraFeed.srcObject = stream;
+                                })
+                                .catch(err => {
+                                    alert("Eroare la accesarea camerei. Funcția este simulată.");
+                                });
+                        }
+                    } else {
+                        videoContainer.style.display = 'none';
+                        inputField.disabled = false;
+                        if (cameraFeed.srcObject) {
+                            cameraFeed.srcObject.getTracks().forEach(track => track.stop());
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

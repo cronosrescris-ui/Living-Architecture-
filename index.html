@@ -361,13 +361,26 @@
                     return { data, context };
                 },
                 // ** Operatori simpli pentru rafinare (13 la 32) **
-                ...Array.from({ length: 20 }, (_, i) => i + 13).reduce((acc, n) => {
-                    acc[n.toString()] = (data, context) => {
-                        context.output += `\n[${n}. Modul Simplu] - Procesare pas cu pas.\n`;
-                        return { data, context };
-                    };
-                    return acc;
-                }, {}),
+                '13': (data, context) => { context.output += `\n[13. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '14': (data, context) => { context.output += `\n[14. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '15': (data, context) => { context.output += `\n[15. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '16': (data, context) => { context.output += `\n[16. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '17': (data, context) => { context.output += `\n[17. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '18': (data, context) => { context.output += `\n[18. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '19': (data, context) => { context.output += `\n[19. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '20': (data, context) => { context.output += `\n[20. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '21': (data, context) => { context.output += `\n[21. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '22': (data, context) => { context.output += `\n[22. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '23': (data, context) => { context.output += `\n[23. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '24': (data, context) => { context.output += `\n[24. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '25': (data, context) => { context.output += `\n[25. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '26': (data, context) => { context.output += `\n[26. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '27': (data, context) => { context.output += `\n[27. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '28': (data, context) => { context.output += `\n[28. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '29': (data, context) => { context.output += `\n[29. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '30': (data, context) => { context.output += `\n[30. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '31': (data, context) => { context.output += `\n[31. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
+                '32': (data, context) => { context.output += `\n[32. Modul Simplu] - Procesare pas cu pas.\n`; return { data, context }; },
                 
                 // ** Operatorul 33 - FINAL **
                 '33': (data, context) => {
@@ -382,45 +395,4 @@
                         });
                     }
 
-                    // ** Principiul Singularității ** (Simultan sub radical și la infinit)
-                    if (systemState.isSymmetricallyCoherent && systemState.isAsymmetricallyCoherent && systemState.isSemanticallyCoherent) {
-                         context.output += `\n   - **Singularitate activată!** Principiul tău a fost implementat. Textul este perfect, coerent din toate punctele de vedere.`;
-                    } else {
-                        context.output += `\n   - Starea singularității: Incoerență detectată la un nivel sau mai multe.\n`;
-                    }
-                    
-                    let finalConcept = "";
-                    if (systemState.isSymmetricallyCoherent && systemState.isSemanticallyCoerent) {
-                         finalConcept = "Conceptul este logic, coerent și valid. Poate fi un principiu, o regulă sau un plan.";
-                    } else if (systemState.isAsymmetricallyCoherent) {
-                         finalConcept = "Conceptul este non-standard, dar creativ. Poate fi o viziune artistică sau o inovație.";
-                    } else {
-                         finalConcept = "Datele nu sunt suficient de coerente pentru a genera un concept.";
-                    }
-                    systemState.finalResult = finalConcept;
-                    context.output += `\n   Rezultat Final: ${systemState.finalResult}\n`;
-                    return { data, context };
-                }
-            };
-
-            const coreFlow = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10²∞', '11²∞', '12', 
-                            ...Array.from({ length: 20 }, (_, i) => (i + 13).toString()), '33'];
-
-            const executeFlow = (input, flow, operators) => {
-                 // Resetăm starea la fiecare execuție
-                systemState = {
-                    isSymmetricallyCoherent: true,
-                    isAsymmetricallyCoherent: false,
-                    isSemanticallyCoherent: true,
-                    finalResult: ""
-                };
-                let currentResult = { data: input, context: { output: '' } };
-                for (const operatorId of flow) {
-                    if (operators[operatorId]) {
-                        currentResult = operators[operatorId](currentResult.data, currentResult.context);
-                    }
-                }
-                return currentResult.context.output;
-            };
-
-            processButton.add
+               
